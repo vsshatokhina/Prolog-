@@ -1,0 +1,63 @@
+﻿/* country(Id, Name, World, Population). */
+
+country(1,"Germany",europe,84).
+country(2,"Russia",asia,146).
+country(3,"China",asia,1412).
+country(4,"Bulgaria",europe,7).
+country(5,"Denmark",europe,6).
+
+/*capital(Id, Name, Population).*/
+
+capital(1,"Berlin",3).
+capital(2,"Moscow",10).
+capital(3,"Beijing",22).
+capital(4,"Sophia",1).
+capital(5, "Copenhagen",0.644).
+
+/* present(Id_capital, Id_country). */
+
+present(1, 1).
+present(2, 2).
+present(3, 3).
+present(4, 4).
+present(5, 5).
+
+/* ethnicity(Id_ethnicity,Name). */
+
+ethnicity(1,"Bulgarians").
+ethnicity(2,"Russians").
+ethnicity(3,"Chinese").
+ethnicity(4,"Germans").
+
+/* lives_here(Id_country,Id_ethnicity). */
+lives_here(2,2).
+lives_here(2,3).
+lives_here(4,1).
+lives_here(4,2).
+lives_here(4,4).
+lives_here(3,3).
+lives_here(5,2).
+lives_here(5,4).
+lives_here(1,2).
+lives_here(1,4).
+
+
+find_capital(Capital,World) :- 
+    capital(Id_Capital,Capital,_),
+    country(Id_Country,_,World,_),
+    present(Id_Capital,Id_Country).
+    
+find_world(Id_Capital,World) :- 
+    capital(Id_Capital,Capital,_),
+    country(Id_Country,_,World,_),
+    present(Id_Capital,Id_Country).
+    
+find_ethnicity(World, Et_Name):-
+    country(Id_country, _, World, _),
+    ethnicity(Id_ethnicity,Et_Name),
+    lives_here(Id_country,Id_ethnicity).
+
+where_more(First_Id,Second_Id,Res_Id):-
+    country(First_Id,First_Name,_,First_Population),
+    country(Second_Id,Second_Name,_,Second_Population),
+    First_Population<Second_Population,!,Res_Id is Second_Name; Res_Id is First_Name.
